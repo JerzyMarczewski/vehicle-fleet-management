@@ -17,8 +17,8 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "registration_no", nullable = false, unique = true)
-    private String registrationNo;
+    @Column(name = "registration_number", nullable = false, unique = true)
+    private String registrationNumber;
 
     @Column(unique = true)
     private String vin;

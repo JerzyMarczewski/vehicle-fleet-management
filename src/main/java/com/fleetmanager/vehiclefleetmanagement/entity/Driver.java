@@ -23,8 +23,8 @@ public class Driver {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "license_no", unique = true, nullable = false)
-    private String licenseNo;
+    @Column(name = "license_number", unique = true, nullable = false)
+    private String licenseNumber;
 
     @Column(name = "employment_date")
     private Date employmentDate;
