@@ -36,4 +36,3 @@ enum MaintenanceType {
     INSPECTION,
     REPAIR
 }
-
