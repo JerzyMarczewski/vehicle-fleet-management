@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table>
+        <tbody th:each="trip : ${trips}" th:remove="tag">
+            <tr>
+                <td th:text="${trip.getStartTime()}"></td>
+                <td th:text="${trip.getEndTime()}"></td>
+                <td th:text="${trip.getStartLocation()}"></td>
+                <td th:text="${trip.getEndLocation()}"></td>
+                <td th:text="${trip.getDistanceKm()}"></td>
+                <td><a th:href="@{/trip/${trip.getUUID()}}">Szczegóły</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
