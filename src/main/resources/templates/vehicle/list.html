@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Vehicles List</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<h1>Vehicles List</h1>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Registration Number</th>
+        <th>VIN</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Production Year</th>
+        <th>Mileage</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vehicle : ${vehicles}">
+        <td th:text="${vehicle.registrationNumber}">REG123</td>
+        <td th:text="${vehicle.vin}">VIN1234567890</td>
+        <td th:text="${vehicle.brand}">Toyota</td>
+        <td th:text="${vehicle.model}">Corolla</td>
+        <td th:text="${vehicle.productionYear}">2015</td>
+        <td th:text="${vehicle.mileage}">120000</td>
+        <td th:text="${vehicle.status}">AVAILABLE</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
