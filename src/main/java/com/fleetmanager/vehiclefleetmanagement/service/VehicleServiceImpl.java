@@ -1,7 +1,6 @@
 package com.fleetmanager.vehiclefleetmanagement.service;
 
 import com.fleetmanager.vehiclefleetmanagement.dto.CreateVehicleRequestDTO;
-import com.fleetmanager.vehiclefleetmanagement.dto.VehicleResponseDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
 import com.fleetmanager.vehiclefleetmanagement.mapper.VehicleMapper;
 import com.fleetmanager.vehiclefleetmanagement.repository.VehicleRepository;
