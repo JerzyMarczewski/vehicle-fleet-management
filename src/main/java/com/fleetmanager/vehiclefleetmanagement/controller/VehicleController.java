@@ -41,6 +41,6 @@ public class VehicleController {
     @PostMapping("/create")
     public String createVehicle(@ModelAttribute("createVehicleRequestDTO") CreateVehicleRequestDTO dto) {
         vehicleService.createVehicle(dto);
-        return "redirect:/vehicle/list";
+        return "redirect:/vehicles";
     }
 }
