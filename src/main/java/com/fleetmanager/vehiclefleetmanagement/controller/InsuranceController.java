@@ -2,7 +2,6 @@ package com.fleetmanager.vehiclefleetmanagement.controller;
 
 import com.fleetmanager.vehiclefleetmanagement.entity.Insurance;
 import com.fleetmanager.vehiclefleetmanagement.service.InsuranceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,6 @@ public class InsuranceController {
 
     private final InsuranceService insuranceService;
 
-    @Autowired
     public InsuranceController(InsuranceService insuranceService) {
         this.insuranceService = insuranceService;
     }

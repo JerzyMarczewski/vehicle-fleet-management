@@ -2,7 +2,6 @@ package com.fleetmanager.vehiclefleetmanagement.service;
 
 import com.fleetmanager.vehiclefleetmanagement.entity.Insurance;
 import com.fleetmanager.vehiclefleetmanagement.repository.InsuranceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +13,6 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     private final InsuranceRepository insuranceRepository;
 
-    @Autowired
     public InsuranceServiceImpl(InsuranceRepository insuranceRepository) {
         this.insuranceRepository = insuranceRepository;
     }

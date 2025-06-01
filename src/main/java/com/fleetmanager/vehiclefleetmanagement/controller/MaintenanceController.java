@@ -2,19 +2,18 @@ package com.fleetmanager.vehiclefleetmanagement.controller;
 
 import com.fleetmanager.vehiclefleetmanagement.entity.Maintenance;
 import com.fleetmanager.vehiclefleetmanagement.service.MaintenanceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/maintenances")
 public class MaintenanceController {
 
     private final MaintenanceService maintenanceService;
 
-    @Autowired
     public MaintenanceController(MaintenanceService maintenanceService) {
         this.maintenanceService = maintenanceService;
     }

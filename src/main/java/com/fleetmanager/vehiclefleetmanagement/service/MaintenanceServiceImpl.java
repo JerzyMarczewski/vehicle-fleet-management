@@ -2,7 +2,6 @@ package com.fleetmanager.vehiclefleetmanagement.service;
 
 import com.fleetmanager.vehiclefleetmanagement.entity.Maintenance;
 import com.fleetmanager.vehiclefleetmanagement.repository.MaintenanceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +13,6 @@ public class MaintenanceServiceImpl implements MaintenanceService {
 
     private final MaintenanceRepository maintenanceRepository;
 
-    @Autowired
     public MaintenanceServiceImpl(MaintenanceRepository maintenanceRepository) {
         this.maintenanceRepository = maintenanceRepository;
     }

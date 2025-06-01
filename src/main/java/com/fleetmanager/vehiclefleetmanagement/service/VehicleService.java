@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class VehicleService {
@@ -24,11 +25,11 @@ public class VehicleService {
         return repository.findAll();
     }
 
-    public Optional<Vehicle> findById(Long id) {
+    public Optional<Vehicle> findById(UUID id) {
         return repository.findById(id);
     }
 
-    public Vehicle update(Long id, Vehicle vehicleDetails) {
+    public Vehicle update(UUID id, Vehicle vehicleDetails) {
         Vehicle vehicle = repository.findById(id).orElseThrow();
         vehicle.setModel(vehicleDetails.getModel());
         vehicle.setRegistrationNumber(vehicleDetails.getRegistrationNumber());
@@ -37,7 +38,7 @@ public class VehicleService {
         return repository.save(vehicle);
     }
 
-    public void delete(Long id) {
+    public void delete(UUID id) {
         repository.deleteById(id);
     }
 }
