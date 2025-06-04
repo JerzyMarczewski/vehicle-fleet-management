@@ -31,27 +31,28 @@ public class Vehicle {
 
     private Integer mileage;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private VehicleStatus status;
+    private VehicleStatus status = VehicleStatus.AVAILABLE;
 
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assignment> assignments = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trip> trips = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Maintenance> maintenances = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Insurance> insurances = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FuelLog> fuelLogs = new ArrayList<>();
 }
 
-enum VehicleStatus {
-    AVAILABLE,
-    SERVICE,
-    OTHER
-}
