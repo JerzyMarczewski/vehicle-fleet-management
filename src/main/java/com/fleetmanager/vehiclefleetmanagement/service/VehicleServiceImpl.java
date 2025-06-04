@@ -1,6 +1,7 @@
 package com.fleetmanager.vehiclefleetmanagement.service;
 
 import com.fleetmanager.vehiclefleetmanagement.dto.CreateVehicleRequestDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.EditVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
 import com.fleetmanager.vehiclefleetmanagement.mapper.VehicleMapper;
 import com.fleetmanager.vehiclefleetmanagement.repository.VehicleRepository;
@@ -39,6 +40,37 @@ public class VehicleServiceImpl implements VehicleService {
     public Vehicle createVehicle(CreateVehicleRequestDTO createVehicleRequestDTO) {
         Vehicle vehicle = vehicleMapper.fromCreateDTO(createVehicleRequestDTO);
         vehicleRepository.save(vehicle);
+        return vehicle;
+    }
+
+    @Override
+    public Vehicle editVehicle(UUID id, EditVehicleRequestDTO editVehicleRequestDTO) {
+        Vehicle existingVehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + id));
+
+        if (!existingVehicle.getRegistrationNumber().equals(editVehicleRequestDTO.getRegistrationNumber())) {
+            vehicleRepository.findByRegistrationNumberIgnoreCase(editVehicleRequestDTO.getRegistrationNumber())
+                    .ifPresent(v -> {
+                        throw new RuntimeException("Registration number already in use");
+                    });
+        }
+
+        if (!existingVehicle.getVin().equals(editVehicleRequestDTO.getVin())) {
+            vehicleRepository.findByVinIgnoreCase(editVehicleRequestDTO.getVin())
+                    .ifPresent(v -> {
+                        throw new RuntimeException("VIN already in use");
+                    });
+        }
+
+        vehicleMapper.updateVehicleFromDTO(editVehicleRequestDTO, existingVehicle);
+        return vehicleRepository.save(existingVehicle);
+    }
+
+    @Override
+    public Vehicle deleteVehicle(UUID id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found with ID: " + id));
+        vehicleRepository.delete(vehicle);
         return vehicle;
     }
 

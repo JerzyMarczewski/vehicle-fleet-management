@@ -8,7 +8,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface VehicleMapper {
-//    VehicleResponseDTO toResponseDTO(Vehicle vehicle);
-//    List<VehicleResponseDTO> toResponseDTOList(List<Vehicle> vehicles);
     Vehicle fromCreateDTO(CreateVehicleRequestDTO dto);
+    Vehicle fromEditDTO(EditVehicleRequestDTO dto);
+
+    EditVehicleRequestDTO toEditDTO(Vehicle vehicle);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateVehicleFromDTO(EditVehicleRequestDTO dto, @MappingTarget Vehicle vehicle);
+
 }

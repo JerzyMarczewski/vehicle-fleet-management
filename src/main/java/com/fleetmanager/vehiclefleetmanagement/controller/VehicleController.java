@@ -1,7 +1,10 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
 import com.fleetmanager.vehiclefleetmanagement.dto.CreateVehicleRequestDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.EditVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
+import com.fleetmanager.vehiclefleetmanagement.mapper.VehicleMapper;
+import com.fleetmanager.vehiclefleetmanagement.service.MessageService;
 import com.fleetmanager.vehiclefleetmanagement.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,13 @@ import java.util.UUID;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final VehicleMapper vehicleMapper;
+    private final MessageService messageService;
+
+    @GetMapping("/search-page")
+    public String showSearchPage() {
+        return "vehicle/search";
+    }
 
     @GetMapping("/search")
     public String searchVehicle(
@@ -75,6 +85,29 @@ public class VehicleController {
     @PostMapping("/create")
     public String createVehicle(@ModelAttribute("createVehicleRequestDTO") CreateVehicleRequestDTO dto) {
         vehicleService.createVehicle(dto);
+        return "redirect:/vehicles";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable UUID id, Model model) {
+        Vehicle vehicle = vehicleService.getVehicleById(id);
+        model.addAttribute("editVehicleRequestDTO", vehicleMapper.toEditDTO(vehicle));
+        model.addAttribute("vehicleId", id);
+        return "vehicle/edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editVehicle(@PathVariable UUID id,
+                              @ModelAttribute EditVehicleRequestDTO dto) {
+        vehicleService.editVehicle(id, dto);  // Updated to pass id separately
+        return "redirect:/vehicles/" + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteVehicle(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
+        vehicleService.deleteVehicle(id);
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageService.getMessage("vehicle.delete.success"));
         return "redirect:/vehicles";
     }
 }
