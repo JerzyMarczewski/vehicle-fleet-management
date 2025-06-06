@@ -1,8 +1,11 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
-import com.fleetmanager.vehiclefleetmanagement.dto.CreateVehicleRequestDTO;
+import com.fleetmanager.vehiclefleetmanagement.enums.VehicleSearchContext;
+import com.fleetmanager.vehiclefleetmanagement.dto.AddVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.dto.EditVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
+import com.fleetmanager.vehiclefleetmanagement.enums.VehicleSearchType;
+import com.fleetmanager.vehiclefleetmanagement.handler.VehicleSearchHandler;
 import com.fleetmanager.vehiclefleetmanagement.mapper.VehicleMapper;
 import com.fleetmanager.vehiclefleetmanagement.service.MessageService;
 import com.fleetmanager.vehiclefleetmanagement.service.VehicleService;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
@@ -21,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VehicleController {
 
+    private final VehicleSearchHandler vehicleSearchHandler;
     private final VehicleService vehicleService;
     private final VehicleMapper vehicleMapper;
     private final MessageService messageService;
@@ -30,35 +33,13 @@ public class VehicleController {
         return "vehicle/search";
     }
 
+
     @GetMapping("/search")
     public String searchVehicle(
-            @RequestParam String searchType,
+            @RequestParam VehicleSearchType searchType,
             @RequestParam String searchValue,
-            @RequestParam(required = false) String returnUrl,
-            @RequestParam(required = false) String selectAction,
-            Model model,
             RedirectAttributes redirectAttributes) {
-
-        try {
-            Optional<Vehicle> result = vehicleService.searchByType(searchType, searchValue);
-
-            if (result.isPresent()) {
-                if (selectAction != null && !selectAction.isEmpty()) {
-                    model.addAttribute("vehicle", result.get());
-                    model.addAttribute("selectAction", selectAction);
-                    model.addAttribute("returnUrl", returnUrl);
-                    return "fragments/vehicle-search :: vehicleSearch";
-                }
-                return "redirect:/vehicles/" + result.get().getId();
-            } else {
-                model.addAttribute("noResults", true);
-            }
-
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
-        }
-
-        return "fragments/vehicle-search :: vehicleSearch";
+        return vehicleSearchHandler.handleVehicleSearch(searchType, searchValue, VehicleSearchContext.DETAILS, redirectAttributes);
     }
 
 
@@ -76,15 +57,15 @@ public class VehicleController {
         return "vehicle/details";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/add")
     public String showCreateForm(Model model) {
-        model.addAttribute("createVehicleRequestDTO", new CreateVehicleRequestDTO());
-        return "vehicle/create";
+        model.addAttribute("addVehicleRequestDTO", new AddVehicleRequestDTO());
+        return "vehicle/add";
     }
 
-    @PostMapping("/create")
-    public String createVehicle(@ModelAttribute("createVehicleRequestDTO") CreateVehicleRequestDTO dto) {
-        vehicleService.createVehicle(dto);
+    @PostMapping("/add")
+    public String addVehicle(@ModelAttribute("addVehicleRequestDTO") AddVehicleRequestDTO dto) {
+        vehicleService.addVehicle(dto);
         return "redirect:/vehicles";
     }
 
@@ -99,7 +80,7 @@ public class VehicleController {
     @PostMapping("/{id}/edit")
     public String editVehicle(@PathVariable UUID id,
                               @ModelAttribute EditVehicleRequestDTO dto) {
-        vehicleService.editVehicle(id, dto);  // Updated to pass id separately
+        vehicleService.editVehicle(id, dto);
         return "redirect:/vehicles/" + id;
     }
 
