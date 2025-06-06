@@ -15,9 +15,10 @@
                     <div class="mb-3">
                         <label for="searchType" class="form-label">Search By</label>
                         <select class="form-select" id="searchType" name="searchType">
-                            <option value="id">ID</option>
-                            <option value="registration">Registration Number</option>
-                            <option value="vin">VIN</option>
+                            <option th:each="type : ${T(com.fleetmanager.vehiclefleetmanagement.enums.VehicleSearchType).values()}"
+                                    th:value="${type}"
+                                    th:text="${type.name()}">
+                            </option>
                         </select>
                     </div>
 
