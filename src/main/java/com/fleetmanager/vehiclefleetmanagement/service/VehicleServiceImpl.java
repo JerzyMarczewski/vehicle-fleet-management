@@ -1,8 +1,9 @@
 package com.fleetmanager.vehiclefleetmanagement.service;
 
-import com.fleetmanager.vehiclefleetmanagement.dto.CreateVehicleRequestDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.AddVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.dto.EditVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
+import com.fleetmanager.vehiclefleetmanagement.enums.VehicleSearchType;
 import com.fleetmanager.vehiclefleetmanagement.mapper.VehicleMapper;
 import com.fleetmanager.vehiclefleetmanagement.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,25 +21,17 @@ public class VehicleServiceImpl implements VehicleService {
     private final VehicleMapper vehicleMapper;
 
     @Override
-    public Optional<Vehicle> searchByType(String type, String query) {
+    public Optional<Vehicle> searchByType(VehicleSearchType type, String query) {
         return switch (type) {
-            case "id" -> {
-                try {
-                    UUID id = UUID.fromString(query);
-                    yield vehicleRepository.findById(id);
-                } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException("Invalid UUID format");
-                }
-            }
-            case "registration" -> vehicleRepository.findByRegistrationNumberIgnoreCase(query);
-            case "vin" -> vehicleRepository.findByVinIgnoreCase(query);
-            default -> throw new IllegalArgumentException("Invalid search type");
+            case ID -> vehicleRepository.findById(UUID.fromString(query));
+            case REGISTRATION -> vehicleRepository.findByRegistrationNumberIgnoreCase(query);
+            case VIN -> vehicleRepository.findByVinIgnoreCase(query);
         };
     }
 
     @Override
-    public Vehicle createVehicle(CreateVehicleRequestDTO createVehicleRequestDTO) {
-        Vehicle vehicle = vehicleMapper.fromCreateDTO(createVehicleRequestDTO);
+    public Vehicle addVehicle(AddVehicleRequestDTO addVehicleRequestDTO) {
+        Vehicle vehicle = vehicleMapper.fromAddDTO(addVehicleRequestDTO);
         vehicleRepository.save(vehicle);
         return vehicle;
     }
