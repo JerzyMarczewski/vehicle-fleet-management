@@ -4,11 +4,9 @@ import com.fleetmanager.vehiclefleetmanagement.dto.*;
 import com.fleetmanager.vehiclefleetmanagement.entity.*;
 import org.mapstruct.*;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface VehicleMapper {
-    Vehicle fromCreateDTO(CreateVehicleRequestDTO dto);
+    Vehicle fromAddDTO(AddVehicleRequestDTO dto);
     Vehicle fromEditDTO(EditVehicleRequestDTO dto);
 
     EditVehicleRequestDTO toEditDTO(Vehicle vehicle);
