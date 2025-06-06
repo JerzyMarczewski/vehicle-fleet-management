@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateVehicleRequestDTO {
+public class AddVehicleRequestDTO {
     private String registrationNumber;
     private String vin;
     private String brand;

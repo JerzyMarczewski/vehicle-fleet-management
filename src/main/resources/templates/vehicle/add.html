@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Create Vehicle')}">
+<head th:replace="~{fragments/head :: head('Add Vehicle')}">
     <title>Create Vehicle</title>
 </head>
 <body>
@@ -8,10 +8,10 @@
     <section>
         <div class="card shadow-sm">
             <div class="card-header bg-white bg-primary-subtle text-primary">
-                <h3 class="mb-0">Create Vehicle</h3>
+                <h3 class="mb-0">Add Vehicle</h3>
             </div>
             <div class="card-body">
-                <form id="vehicleForm" action="/vehicles/create" method="post" th:object="${createVehicleRequestDTO}">
+                <form id="vehicleForm" action="/vehicles/add" method="post" th:object="${addVehicleRequestDTO}">
                     <div class="form-group">
                         <label for="brand">Brand</label>
                         <input type="text" class="form-control" id="brand" name="brand" th:field="*{brand}">
@@ -44,7 +44,7 @@
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Create
+                            <i class="fas fa-plus"></i> Add Vehicle
                         </button>
                     </div>
                 </form>
