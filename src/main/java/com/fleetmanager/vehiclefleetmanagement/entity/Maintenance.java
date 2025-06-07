@@ -31,9 +31,3 @@ public class Maintenance {
     @Enumerated(EnumType.STRING)
     private MaintenanceType type;
 }
-
-enum MaintenanceType {
-    INSPECTION,
-    REPAIR
-}
-
