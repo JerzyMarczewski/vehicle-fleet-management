@@ -27,6 +27,15 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    implementation 'org.webjars:bootstrap:5.3.3'
+    implementation 'org.webjars:jquery:3.7.1'
+    implementation 'org.webjars:popper.js:2.11.7'
+
+    implementation 'org.webjars:font-awesome:6.5.1'
+    implementation 'org.webjars:webjars-locator:0.50'
 }
 
 tasks.named('test') {

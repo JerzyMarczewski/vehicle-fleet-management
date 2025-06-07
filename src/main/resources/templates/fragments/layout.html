@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" class="min-vh-100 m-0 p-0">
+<head th:replace="~{fragments/head :: head('Vehicle Fleet Management')}">
+</head>
+<body class="min-vh-100 vh-100 m-0 p-0">
+
+<nav th:fragment="topNav" class="navbar navbar-expand-lg bg-primary border-bottom shadow-sm fixed-top">
+    <div class="container-fluid d-flex justify-content-center position-relative">
+        <a class="navbar-brand mx-auto" href="/">
+            <p class="text-white mb-0">VEHICLE FLEET MANAGEMENT</p>
+        </a>
+    </div>
+</nav>
+
+<nav th:fragment="sideNav" class="fixed-start bg-dark-subtle h-100" style="width: 250px; top: 56px;">
+    <div class="p-3">
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link text-dark" href="/dashboard">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link text-dark d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse"
+                   href="#vehicleFlow"
+                   role="button"
+                   aria-expanded="false"
+                   aria-controls="vehicleFlow">
+                    <span>
+                        <i class="fas fa-car me-2"></i> Vehicle Flow
+                    </span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="collapse" id="vehicleFlow">
+                    <ul class="nav flex-column ms-3 mt-2">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/vehicles">
+                                <i class="fas fa-list me-2"></i> All Vehicles
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/vehicles/create">
+                                <i class="fas fa-plus me-2"></i> Create Vehicle
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/vehicles/search-page">
+                                <i class="fas fa-search me-2"></i> Find Vehicle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div th:fragment="mainContent(content)" class="min-vh-100 vh-100 d-flex flex-column bg-body m-0 p-0">
+    <div th:replace="~{fragments/layout :: topNav}"></div>
+
+    <div class="vh-100 d-flex mt-5">
+        <div th:replace="~{fragments/layout :: sideNav}"></div>
+
+        <div class="flex-grow-1 p-4">
+            <div th:replace="${content}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
