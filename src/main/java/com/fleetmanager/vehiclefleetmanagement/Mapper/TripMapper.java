@@ -2,17 +2,11 @@ package com.fleetmanager.vehiclefleetmanagement.Mapper;
 
 import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripSummaryDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Trip;
+import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-public class TripMapper {
-    public TripSummaryDTO toSummaryDTO(Trip trip){
-        return new TripSummaryDTO(
-                trip.getId(),
-                trip.getStartTime(),
-                trip.getEndTime(),
-                trip.getStartLocation(),
-                trip.getEndLocation(),
-                trip.getDistanceKm()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface TripMapper {
+    public TripSummaryDTO toSummaryDTO(Trip trip);
+    public Trip fromSummaryDTO(TripSummaryDTO dto);
 }
