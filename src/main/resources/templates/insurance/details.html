@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Insurance Details')}">
+    <title>Insurance Details</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Insurance Details</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>ID</th>
+                        <td th:text="${insurance.id}"></td>
+                    </tr>
+                    <tr>
+                        <th>Policy number</th>
+                        <td th:text="${insurance.policyNumber}"></td>
+                    </tr>
+                    <tr>
+                        <th>Valid from</th>
+                        <td th:text="${insurance.validFrom}"></td>
+                    </tr>
+                    <tr>
+                        <th>Valid to</th>
+                        <td th:text="${insurance.validTo}"></td>
+                    </tr>
+                    <tr>
+                        <th>Cost</th>
+                        <td th:text="${insurance.cost}"></td>
+                    </tr>
+                    <tr>
+                        <th>Provider</th>
+                        <td th:text="${insurance.provider}"></td>
+                    </tr>
+                    <tr>
+                        <th>Vehicle</th>
+                        <td th:text="${insurance.vehicle.id}"></td>
+                    </tr>
+                </table>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a th:href="@{/insurances}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back to list
+                    </a>
+                    <a th:href="@{/insurance/{id}/edit(id=${insurance.id})}" class="btn btn-primary me-2">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <form th:action="@{/insurances/{id}(id=${insurance.id})}" method="post" style="display: inline;">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" class="btn btn-outline-danger"
+                                onclick="return confirm('Are you sure you want to delete this insurance?')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+</body>
+</html>

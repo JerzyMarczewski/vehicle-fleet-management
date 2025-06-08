@@ -1,10 +1,16 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
+import com.fleetmanager.vehiclefleetmanagement.dto.CreateInsuranceRequestDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.EditInsuranceRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Insurance;
+import com.fleetmanager.vehiclefleetmanagement.mapper.InsuranceMapper;
 import com.fleetmanager.vehiclefleetmanagement.service.InsuranceService;
+import com.fleetmanager.vehiclefleetmanagement.service.MessageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -13,43 +19,129 @@ import java.util.*;
 public class InsuranceController {
 
     private final InsuranceService insuranceService;
+    private final InsuranceMapper insuranceMapper;
+    private final MessageService messageService;
 
-    public InsuranceController(InsuranceService insuranceService) {
+    public InsuranceController(InsuranceService insuranceService, InsuranceMapper insuranceMapper, MessageService messageService) {
         this.insuranceService = insuranceService;
+        this.insuranceMapper = insuranceMapper;
+        this.messageService = messageService;
     }
 
-    @PostMapping
-    public ResponseEntity<Insurance> createInsurance(@RequestBody Insurance insurance) {
-        Insurance savedInsurance = insuranceService.saveInsurance(insurance);
-        return ResponseEntity.ok(savedInsurance);
+    @GetMapping("/search-page")
+    public String showSearchPage() {
+        return "insurances/search-page";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Insurance> getInsuranceById(@PathVariable UUID id) {
-        return insuranceService.getInsuranceById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/search")
+    public String searchInsurance(
+            @RequestParam String searchType,
+            @RequestParam String searchValue,
+            @RequestParam(required = false) String returnUrl,
+            @RequestParam(required = false) String selectAction,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        try {
+            Optional<Insurance> result = insuranceService.searchByPolicyNumber(searchType, searchValue);
+
+            if (result.isPresent()) {
+                if (selectAction != null && !selectAction.isEmpty()) {
+                    model.addAttribute("returnUrl", returnUrl);
+                    model.addAttribute("selectAction", selectAction);
+                    model.addAttribute("insurance", result.get());
+                    return "fragments/insurance-search :: insuranceSearch";
+                }
+            } else {
+                model.addAttribute("noResult", true);
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
+        return "fragments/insurance-search :: insuranceSearch";
     }
 
     @GetMapping
-    public ResponseEntity<List<Insurance>> getAllInsurances() {
+    public String showInsurance(Model model) {
         List<Insurance> insurances = insuranceService.getAllInsurances();
-        return ResponseEntity.ok(insurances);
+        model.addAttribute("insurances", insurances);
+        return "insurance/list";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Insurance> updateInsurance(@PathVariable UUID id, @RequestBody Insurance insurance) {
-        try {
-            Insurance updatedInsurance = insuranceService.updateInsurance(id, insurance);
-            return ResponseEntity.ok(updatedInsurance);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}")
+    public String getInsuranceById(@PathVariable UUID id, Model model) {
+        Insurance insurance = insuranceService.getInsuranceById(id);
+        model.addAttribute("insurance", insurance);
+        return "insurance/details";
+    }
+
+    @GetMapping("/create")
+    public String showCreateForm(Model model) {
+        model.addAttribute("createInsuranceRequestDTO", new CreateInsuranceRequestDTO());
+        return "insurance/create";
+    }
+
+    @PostMapping("/create")
+    public String createInsurance(Model model) {
+        model.addAttribute("createInsuranceRequestDTO", new CreateInsuranceRequestDTO());
+        return "redirect:/insurances";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable UUID id, Model model) {
+        Insurance insurance = insuranceService.getInsuranceById(id);
+        model.addAttribute("editInsuranceRequestDTO", insuranceMapper.toEditDTO(insurance));
+        model.addAttribute("insuranceId", id);
+        return "insurance/edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editInsurance(@PathVariable UUID id, @ModelAttribute EditInsuranceRequestDTO dto) {
+        insuranceService.editInsurance(id, dto);
+        return "redirect:/insurances/" + id;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteInsurance(@PathVariable UUID id) {
+    public String deleteInsurance(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         insuranceService.deleteInsurance(id);
-        return ResponseEntity.noContent().build();
+        redirectAttributes.addFlashAttribute("message", messageService.getMessage("insurance.delete.success"));
+        return "redirect:/insurances";
+
     }
+
+
+//    @PostMapping("/create")
+//    public ResponseEntity<Insurance> createInsurance(@RequestBody Insurance insurance) {
+//        Insurance savedInsurance = insuranceService.saveInsurance(insurance);
+//        return ResponseEntity.ok(savedInsurance);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Insurance> getInsuranceById(@PathVariable UUID id) {
+//        return insuranceService.getInsuranceById(id)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<List<Insurance>> getAllInsurances() {
+//        List<Insurance> insurances = insuranceService.getAllInsurances();
+//        return ResponseEntity.ok(insurances);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Insurance> updateInsurance(@PathVariable UUID id, @RequestBody Insurance insurance) {
+//        try {
+//            Insurance updatedInsurance = insuranceService.updateInsurance(id, insurance);
+//            return ResponseEntity.ok(updatedInsurance);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteInsurance(@PathVariable UUID id) {
+//        insuranceService.deleteInsurance(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }

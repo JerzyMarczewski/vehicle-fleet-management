@@ -28,6 +28,7 @@ public class Maintenance {
 
     private Double cost;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private MaintenanceType type;
+    public MaintenanceType type = MaintenanceType.INSPECTION;
 }
