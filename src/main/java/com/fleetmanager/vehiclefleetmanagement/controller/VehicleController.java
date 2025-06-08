@@ -64,8 +64,10 @@ public class VehicleController {
     }
 
     @PostMapping("/add")
-    public String addVehicle(@ModelAttribute("addVehicleRequestDTO") AddVehicleRequestDTO dto) {
+    public String addVehicle(@ModelAttribute("addVehicleRequestDTO") AddVehicleRequestDTO dto, RedirectAttributes redirectAttributes) {
         vehicleService.addVehicle(dto);
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageService.getMessage("vehicle.add.success"));
         return "redirect:/vehicles";
     }
 
@@ -79,8 +81,10 @@ public class VehicleController {
 
     @PostMapping("/{id}/edit")
     public String editVehicle(@PathVariable UUID id,
-                              @ModelAttribute EditVehicleRequestDTO dto) {
+                              @ModelAttribute EditVehicleRequestDTO dto, RedirectAttributes redirectAttributes) {
         vehicleService.editVehicle(id, dto);
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageService.getMessage("vehicle.edit.success"));
         return "redirect:/vehicles/" + id;
     }
 
