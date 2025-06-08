@@ -9,4 +9,5 @@ import java.util.List;
 public interface TripService {
 
     List<Trip> getAllTrips();
+    Trip createTrip(Trip trip);
 }

@@ -16,6 +16,11 @@ public class TripServiceImpl implements TripService{
 
     @Override
     public List<Trip> getAllTrips() {
-        return List.of();
+        return tripRepository.findAll();
+    }
+
+    @Override
+    public Trip createTrip(Trip trip) {
+        return tripRepository.save(trip);
     }
 }
