@@ -1,7 +1,9 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
+import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripDetailsDTO;
 import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripSummaryDTO;
 import com.fleetmanager.vehiclefleetmanagement.Mapper.TripMapper;
+import com.fleetmanager.vehiclefleetmanagement.entity.Trip;
 import com.fleetmanager.vehiclefleetmanagement.service.TripService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,31 +32,35 @@ public class TripController {
                 .stream()
                 .map(tripMapper::toSummaryDTO)
                 .collect(toList()));
+
        return "trip/index";
     }
 
     @GetMapping("/{id}")
-    public TripSummaryDTO showTripDetails(@RequestParam("id") UUID id){
-        return null;
+    public String showTripDetails(@RequestParam("id") UUID id){
+        return "trip/details";
     }
 
     @PutMapping("/{id}")
-    public TripSummaryDTO updateTrip(@RequestBody TripSummaryDTO trip, @PathVariable String id){
-        return null;
+    public String updateTrip(@RequestBody TripSummaryDTO trip, @PathVariable String id){
+        return "redirect:trip/details?id=" + id;
     }
 
     @DeleteMapping
-    public TripSummaryDTO deleteTrip(@RequestBody UUID id){
-        return null;
+    public String deleteTrip(@RequestBody UUID id){
+        return "redirect:/trip/index";
     }
 
     @GetMapping("/new")
-    public TripSummaryDTO showNewTripForm(){
-        return null;
+    public String showNewTripForm(){
+        return "trip/create";
     }
 
     @PostMapping("/new")
-    public TripSummaryDTO createNewTrip(@RequestBody TripSummaryDTO trip){
-        return null;
+    public String createNewTrip(@RequestBody TripDetailsDTO trip){
+        Trip newTrip = tripMapper.fromDetailsDTO(trip);
+        
+        newTrip = tripService.createTrip(newTrip);
+        return "redirect:/trip/details?id="+newTrip.getId();
     }
 }
