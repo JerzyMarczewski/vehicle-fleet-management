@@ -21,12 +21,10 @@ public class InsuranceController {
 
     private final InsuranceService insuranceService;
     private final InsuranceMapper insuranceMapper;
-    private final MessageService messageService;
 
-    public InsuranceController(InsuranceService insuranceService, InsuranceMapper insuranceMapper, MessageService messageService) {
+    public InsuranceController(InsuranceService insuranceService, InsuranceMapper insuranceMapper) {
         this.insuranceService = insuranceService;
         this.insuranceMapper = insuranceMapper;
-        this.messageService = messageService;
     }
 
     @GetMapping("/search-page")
