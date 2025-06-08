@@ -4,7 +4,6 @@ import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripSummaryDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Trip;
 import org.springframework.stereotype.Component;
 
-@Component
 public class TripMapper {
     public TripSummaryDTO toSummaryDTO(Trip trip){
         return new TripSummaryDTO(

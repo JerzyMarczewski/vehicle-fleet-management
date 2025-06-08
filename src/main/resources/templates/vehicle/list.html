@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Vehicles List')}">
+    <title>Vehicles List</title>
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Vehicles List</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Registration Number</th>
+                        <th>VIN</th>
+                        <th>Brand</th>
+                        <th>Model</th>
+                        <th>Production Year</th>
+                        <th>Mileage</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="vehicle : ${vehicles}">
+                        <td><a th:href="@{/vehicles/{id}(id=${vehicle.id})}" class="text-primary text-decoration-none" th:text="${vehicle.id}"></a></td>
+                        <td th:text="${vehicle.registrationNumber}"></td>
+                        <td th:text="${vehicle.vin}"></td>
+                        <td th:text="${vehicle.brand}"></td>
+                        <td th:text="${vehicle.model}"></td>
+                        <td th:text="${vehicle.productionYear}"></td>
+                        <td th:text="${vehicle.mileage}"></td>
+                        <td th:text="${vehicle.status}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="/" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <a href="/vehicles/create" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Vehicle
+                    </a>
+                </div>
+            </div>
+    </section>
+</div>
+</body>
+</html>

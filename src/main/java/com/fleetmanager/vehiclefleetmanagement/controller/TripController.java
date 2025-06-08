@@ -34,7 +34,7 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
-    public TripSummaryDTO showTripDetails(@PathVariable("id") UUID id){
+    public TripSummaryDTO showTripDetails(@RequestParam("id") UUID id){
         return null;
     }
 
