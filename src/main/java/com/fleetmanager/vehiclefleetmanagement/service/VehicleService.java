@@ -16,35 +16,3 @@ public interface VehicleService {
     List<Vehicle> getAllVehicles();
     Vehicle getVehicleById(UUID id);
 }
-
-    private final VehicleRepository repository;
-
-    public VehicleService(VehicleRepository repository) {
-        this.repository = repository;
-    }
-
-    public Vehicle save(Vehicle vehicle) {
-        return repository.save(vehicle);
-    }
-
-    public List<Vehicle> findAll() {
-        return repository.findAll();
-    }
-
-    public Optional<Vehicle> findById(UUID id) {
-        return repository.findById(id);
-    }
-
-    public Vehicle update(UUID id, Vehicle vehicleDetails) {
-        Vehicle vehicle = repository.findById(id).orElseThrow();
-        vehicle.setModel(vehicleDetails.getModel());
-        vehicle.setRegistrationNumber(vehicleDetails.getRegistrationNumber());
-        vehicle.setVin(vehicleDetails.getVin());
-        vehicle.setProductionYear(vehicleDetails.getProductionYear());
-        return repository.save(vehicle);
-    }
-
-    public void delete(UUID id) {
-        repository.deleteById(id);
-    }
-}
