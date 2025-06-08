@@ -3,6 +3,7 @@ package com.fleetmanager.vehiclefleetmanagement.service;
 import com.fleetmanager.vehiclefleetmanagement.dto.CreateInsuranceRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.dto.EditInsuranceRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Insurance;
+import com.fleetmanager.vehiclefleetmanagement.entity.Vehicle;
 import com.fleetmanager.vehiclefleetmanagement.mapper.InsuranceMapper;
 import com.fleetmanager.vehiclefleetmanagement.repository.InsuranceRepository;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     private final InsuranceRepository insuranceRepository;
     private final InsuranceMapper insuranceMapper;
+    private final VehicleService vehicleService;
 
-    public InsuranceServiceImpl(InsuranceRepository insuranceRepository, InsuranceMapper insuranceMapper) {
+    public InsuranceServiceImpl(InsuranceRepository insuranceRepository, InsuranceMapper insuranceMapper, VehicleService vehicleService) {
         this.insuranceRepository = insuranceRepository;
         this.insuranceMapper = insuranceMapper;
+        this.vehicleService = vehicleService;
     }
 
     @Override
@@ -39,9 +42,13 @@ public class InsuranceServiceImpl implements InsuranceService {
 
     @Override
     public Insurance createInsurance(CreateInsuranceRequestDTO createInsuranceRequestDTO) {
+        Vehicle vehicle = vehicleService.getVehicleById(createInsuranceRequestDTO.getVehicleId());
+
         Insurance insurance = insuranceMapper.fromCreateDTO(createInsuranceRequestDTO);
-        insuranceRepository.save(insurance);
-        return insurance;
+
+        insurance.setVehicle(vehicle);
+
+        return insuranceRepository.save(insurance);
     }
 
     @Override

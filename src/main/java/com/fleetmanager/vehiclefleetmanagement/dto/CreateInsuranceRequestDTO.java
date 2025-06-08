@@ -9,8 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,7 +23,8 @@ public class CreateInsuranceRequestDTO {
     private String name;
     private String provider;
     private String policyNumber;
-    private Date validFrom;
-    private Date validTo;
+    private UUID vehicleId;
+    private LocalDate validFrom;
+    private LocalDate validTo;
     private Double cost;
 }

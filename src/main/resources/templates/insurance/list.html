@@ -24,7 +24,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="insurance : ${insurances}">
-                        <td><a th:href="@{/insurance/{id}(id=${insurance.id})}" class="text-primary text-decoration-none" th:text="${vehicle.id}"></a></td>
+                        <td><a th:href="@{/insurances/{id}(id=${insurance.id})}" class="text-primary text-decoration-none" th:text="${insurance.id}"></a></td>
                         <td th:text="${insurance.provider}"></td>
                         <td th:text="${insurance.policyNumber}"></td>
                         <td th:text="${insurance.validFrom}"></td>

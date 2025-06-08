@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Controller
 @RequestMapping("/insurances")
@@ -30,7 +31,7 @@ public class InsuranceController {
 
     @GetMapping("/search-page")
     public String showSearchPage() {
-        return "insurances/search-page";
+        return "insurance/search";
     }
 
     @GetMapping("/search")
@@ -51,6 +52,7 @@ public class InsuranceController {
                     model.addAttribute("insurance", result.get());
                     return "fragments/insurance-search :: insuranceSearch";
                 }
+                return "redirect:/insurances/" + result.get().getId();
             } else {
                 model.addAttribute("noResult", true);
             }
@@ -82,9 +84,10 @@ public class InsuranceController {
     }
 
     @PostMapping("/create")
-    public String createInsurance(Model model) {
-        model.addAttribute("createInsuranceRequestDTO", new CreateInsuranceRequestDTO());
+    public String createInsurance(@ModelAttribute("createInsuranceRequestDTO") CreateInsuranceRequestDTO dto) {
+        insuranceService.createInsurance(dto);
         return "redirect:/insurances";
+
     }
 
     @GetMapping("/{id}/edit")
@@ -96,52 +99,19 @@ public class InsuranceController {
     }
 
     @PostMapping("/{id}/edit")
-    public String editInsurance(@PathVariable UUID id, @ModelAttribute EditInsuranceRequestDTO dto) {
-        insuranceService.editInsurance(id, dto);
-        return "redirect:/insurances/" + id;
-    }
+    public String editInsurance(
+    @PathVariable UUID id, 
+    @ModelAttribute @DateTimeFormat(pattern = "yyyy-MM-dd") EditInsuranceRequestDTO dto
+) {
+    insuranceService.editInsurance(id, dto);
+    return "redirect:/insurances/" + id;
+}
 
     @DeleteMapping("/{id}")
     public String deleteInsurance(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         insuranceService.deleteInsurance(id);
-        redirectAttributes.addFlashAttribute("message", messageService.getMessage("insurance.delete.success"));
+        redirectAttributes.addFlashAttribute("message", "Insurance has been deleted");
         return "redirect:/insurances";
 
     }
-
-
-//    @PostMapping("/create")
-//    public ResponseEntity<Insurance> createInsurance(@RequestBody Insurance insurance) {
-//        Insurance savedInsurance = insuranceService.saveInsurance(insurance);
-//        return ResponseEntity.ok(savedInsurance);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Insurance> getInsuranceById(@PathVariable UUID id) {
-//        return insuranceService.getInsuranceById(id)
-//                .map(ResponseEntity::ok)
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @GetMapping
-//    public ResponseEntity<List<Insurance>> getAllInsurances() {
-//        List<Insurance> insurances = insuranceService.getAllInsurances();
-//        return ResponseEntity.ok(insurances);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Insurance> updateInsurance(@PathVariable UUID id, @RequestBody Insurance insurance) {
-//        try {
-//            Insurance updatedInsurance = insuranceService.updateInsurance(id, insurance);
-//            return ResponseEntity.ok(updatedInsurance);
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteInsurance(@PathVariable UUID id) {
-//        insuranceService.deleteInsurance(id);
-//        return ResponseEntity.noContent().build();
-//    }
 }
