@@ -13,17 +13,11 @@ import java.util.Optional;
 @Mapper(componentModel = "spring")
 public interface TripMapper {
     TripSummaryDTO toSummaryDTO(Trip trip);
-    Optional<TripSummaryDTO> toSummaryDTO(Optional<Trip> trip);
-
     Trip fromSummaryDTO(TripSummaryDTO dto);
-    Optional<Trip> fromSummaryDTO(Optional<TripSummaryDTO> dto);
-
 
     TripDetailsDTO toDetailsDTO(Trip trip);
-    Optional<TripDetailsDTO> toDetailsDTO(Optional<Trip> trip);
 
     Trip fromDetailsDTO(TripDetailsDTO dto);
-    Optional<Trip> fromDetailsDTO(Optional<TripDetailsDTO> dto);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

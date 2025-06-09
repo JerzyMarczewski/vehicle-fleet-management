@@ -56,8 +56,14 @@ public class TripServiceImpl implements TripService{
 
     @Override
     public Optional<TripDetailsDTO> getTripDetailsDTOById(UUID id) {
-        var trip = getTripById(id);
-        return tripMapper.toDetailsDTO(trip);
+        Optional<Trip> trip = getTripById(id);
+
+        if(trip.isPresent()){
+            TripDetailsDTO dto = tripMapper.toDetailsDTO(trip.get());
+            return Optional.of(dto);
+        }
+
+        return Optional.empty();
     }
 
     @Override
