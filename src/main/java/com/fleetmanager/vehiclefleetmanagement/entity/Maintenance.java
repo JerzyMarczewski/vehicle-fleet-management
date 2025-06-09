@@ -2,6 +2,8 @@ package com.fleetmanager.vehiclefleetmanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -21,7 +23,7 @@ public class Maintenance {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
-    private Date date;
+    private LocalDate date;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -29,5 +31,5 @@ public class Maintenance {
     private Double cost;
 
     @Enumerated(EnumType.STRING)
-    private MaintenanceType type;
+    public MaintenanceType type;
 }

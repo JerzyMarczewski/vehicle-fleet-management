@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Edit Vehicle')}">
+    <title>Edit Vehicle</title>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Edit Vehicle</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/insurances/{id}/edit(id=${insuranceId})}" method="post" th:object="${editInsuranceRequestDTO}">
+                    <div class="form-group">
+                        <label for="brand">Policy number</label>
+                        <input type="text" class="form-control" id="brand" th:field="*{policyNumber}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider">Provider</label>
+                        <input type="text" class="form-control" id="provider" th:field="*{provider}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valid-from">Valid from</label>
+                        <input type="date" class="form-control" id="valid-from" th:field="*{validFrom}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valid-to">Valid to</label>
+                        <input type="date" class="form-control" id="valid-to" th:field="*{validTo}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cost">Cost</label>
+                        <input type="number" class="form-control" id="cost" th:field="*{cost}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="vehicle-id">Vehicle id</label>
+                        <input type="text" class="form-control" id="vehicle-id" th:field="*{vehicleId}">
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <a th:href="@{/insurances/{id}(id=${insuranceId})}" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
