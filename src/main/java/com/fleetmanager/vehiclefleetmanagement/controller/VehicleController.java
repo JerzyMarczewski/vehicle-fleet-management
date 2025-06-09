@@ -1,5 +1,6 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
+import com.fleetmanager.vehiclefleetmanagement.enums.FlashAttribute;
 import com.fleetmanager.vehiclefleetmanagement.enums.VehicleSearchContext;
 import com.fleetmanager.vehiclefleetmanagement.dto.AddVehicleRequestDTO;
 import com.fleetmanager.vehiclefleetmanagement.dto.EditVehicleRequestDTO;
@@ -66,7 +67,7 @@ public class VehicleController {
     @PostMapping("/add")
     public String addVehicle(@ModelAttribute("addVehicleRequestDTO") AddVehicleRequestDTO dto, RedirectAttributes redirectAttributes) {
         vehicleService.addVehicle(dto);
-        redirectAttributes.addFlashAttribute("successMessage",
+        redirectAttributes.addFlashAttribute(FlashAttribute.SUCCESS_MESSAGE.getAttributeName(),
                 messageService.getMessage("vehicle.add.success"));
         return "redirect:/vehicles";
     }
@@ -83,7 +84,7 @@ public class VehicleController {
     public String editVehicle(@PathVariable UUID id,
                               @ModelAttribute EditVehicleRequestDTO dto, RedirectAttributes redirectAttributes) {
         vehicleService.editVehicle(id, dto);
-        redirectAttributes.addFlashAttribute("successMessage",
+        redirectAttributes.addFlashAttribute(FlashAttribute.SUCCESS_MESSAGE.getAttributeName(),
                 messageService.getMessage("vehicle.edit.success"));
         return "redirect:/vehicles/" + id;
     }
@@ -91,7 +92,7 @@ public class VehicleController {
     @DeleteMapping("/{id}")
     public String deleteVehicle(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         vehicleService.deleteVehicle(id);
-        redirectAttributes.addFlashAttribute("successMessage",
+        redirectAttributes.addFlashAttribute(FlashAttribute.SUCCESS_MESSAGE.getAttributeName(),
                 messageService.getMessage("vehicle.delete.success"));
         return "redirect:/vehicles";
     }
