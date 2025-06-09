@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Driver Details')}">
+    <title>Driver Details</title>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Driver Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5 class="text-primary">Personal Information</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">ID:</dt>
+                            <dd class="col-sm-8" th:text="${driver.id}"></dd>
+
+                            <dt class="col-sm-4">First Name:</dt>
+                            <dd class="col-sm-8" th:text="${driver.firstName}"></dd>
+
+                            <dt class="col-sm-4">Last Name:</dt>
+                            <dd class="col-sm-8" th:text="${driver.lastName}"></dd>
+
+                            <dt class="col-sm-4">License Number:</dt>
+                            <dd class="col-sm-8" th:text="${driver.licenseNumber}"></dd>
+
+                            <dt class="col-sm-4">Employment Date:</dt>
+                            <dd class="col-sm-8" th:text="${driver.employmentDate != null ? #temporals.format(driver.employmentDate, 'dd/MM/yyyy') : 'N/A'}"></dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <div class="row mb-4" th:if="${driver.assignments != null and #lists.size(driver.assignments) > 0}">
+                    <div class="col-12">
+                        <h5 class="text-primary">Vehicle Assignments</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Vehicle ID</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="assignment : ${driver.assignments}">
+                                    <td th:text="${assignment.vehicle != null ? assignment.vehicle.id : 'N/A'}"></td>
+                                    <td th:text="${#dates.format(assignment.startDate, 'dd/MM/yyyy')}"></td>
+                                    <td th:text="${assignment.endDate != null ? #dates.format(assignment.endDate, 'dd/MM/yyyy') : 'Active'}"></td>
+                                    <td>
+                                        <span th:if="${assignment.endDate == null}" class="badge bg-success">Active</span>
+                                        <span th:if="${assignment.endDate != null}" class="badge bg-secondary">Completed</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4" th:if="${driver.trips != null and #lists.size(driver.trips) > 0}">
+                    <div class="col-12">
+                        <h5 class="text-primary">Recent Trips</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Vehicle</th>
+                                    <th>Start Location</th>
+                                    <th>End Location</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Distance (km)</th>
+                                    <th>Purpose</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="trip : ${driver.trips}">
+                                    <td th:text="${trip.vehicle != null ? trip.vehicle.id : 'N/A'}"></td>
+                                    <td th:text="${trip.startLocation}"></td>
+                                    <td th:text="${trip.endLocation}"></td>
+                                    <td th:text="${#dates.format(trip.startTime, 'dd/MM/yyyy HH:mm')}"></td>
+                                    <td th:text="${trip.endTime != null ? #dates.format(trip.endTime, 'dd/MM/yyyy HH:mm') : 'In Progress'}"></td>
+                                    <td th:text="${trip.distanceKm}"></td>
+                                    <td th:text="${trip.purpose}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div th:if="${driver.assignments == null or #lists.size(driver.assignments) == 0}" class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No vehicle assignments found for this driver.
+                </div>
+
+                <div th:if="${driver.trips == null or #lists.size(driver.trips) == 0}" class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>No trips found for this driver.
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="/drivers" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                    <a th:href="@{/drivers/edit/{id}(id=${driver.id})}" class="btn btn-warning me-2">
+                        <i class="fas fa-edit"></i> Edit Driver
+                    </a>
+                    <form th:action="@{/drivers/{id}(id=${driver.id})}" method="post" class="d-inline">
+                        <input type="hidden" name="_method" value="DELETE"/>
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this driver?')">
+                            <i class="fas fa-trash"></i> Delete Driver
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
