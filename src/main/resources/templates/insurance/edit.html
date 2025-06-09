@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Edit Vehicle')}">
-    <title>Edit Vehicle</title>
+<head th:replace="~{fragments/head :: head('Edit Insurance')}">
+    <title>Edit Insurance</title>
 </head>
 <body>
 <div th:replace="~{fragments/layout :: mainContent(~{::section})}">
     <section>
         <div class="card shadow-sm">
             <div class="card-header bg-white bg-primary-subtle text-primary">
-                <h3 class="mb-0">Edit Vehicle</h3>
+                <h3 class="mb-0">Edit Insurance</h3>
             </div>
             <div class="card-body">
                 <form th:action="@{/insurances/{id}/edit(id=${insuranceId})}" method="post" th:object="${editInsuranceRequestDTO}">
