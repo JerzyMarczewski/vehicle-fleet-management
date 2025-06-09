@@ -13,7 +13,7 @@
                 <td th:text="${trip.getStartLocation()}"></td>
                 <td th:text="${trip.getEndLocation()}"></td>
                 <td th:text="${trip.getDistanceKm()}"></td>
-                <td><a th:href="@{/trip/${trip.getUUID()}}">Szczegóły</a></td>
+                <td><a th:href="@{/trip/{id}(id=${trip.id})}">Details</a></td>
             </tr>
         </tbody>
     </table>

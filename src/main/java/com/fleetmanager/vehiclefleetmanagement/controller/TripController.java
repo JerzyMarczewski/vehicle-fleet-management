@@ -61,6 +61,6 @@ public class TripController {
     @PostMapping("/new")
     public String createNewTrip(@RequestBody TripDetailsDTO trip){
         Trip newTrip = tripService.createTrip(trip);
-        return "redirect:/trip/details?id="+newTrip.getId();
+        return "redirect:/trip/details?id=" + newTrip.getId();
     }
 }
