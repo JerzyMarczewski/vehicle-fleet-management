@@ -58,7 +58,7 @@ public class VehicleController {
     }
 
     @GetMapping("/add")
-    public String showCreateForm(Model model) {
+    public String showAddForm(Model model) {
         model.addAttribute("addVehicleRequestDTO", new AddVehicleRequestDTO());
         return "vehicle/add";
     }

@@ -2,6 +2,8 @@ package com.fleetmanager.vehiclefleetmanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -27,7 +29,7 @@ public class Driver {
     private String licenseNumber;
 
     @Column(name = "employment_date")
-    private Date employmentDate;
+    private LocalDate employmentDate;
 
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assignment> assignments = new ArrayList<>();
