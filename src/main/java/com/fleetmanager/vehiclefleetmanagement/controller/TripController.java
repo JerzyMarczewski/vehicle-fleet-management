@@ -1,6 +1,6 @@
 package com.fleetmanager.vehiclefleetmanagement.controller;
 
-import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripDetailsDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.TripDetailsDTO;
 import com.fleetmanager.vehiclefleetmanagement.mapper.TripMapper;
 import com.fleetmanager.vehiclefleetmanagement.entity.Trip;
 import com.fleetmanager.vehiclefleetmanagement.service.TripService;

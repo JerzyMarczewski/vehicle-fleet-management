@@ -1,7 +1,7 @@
 package com.fleetmanager.vehiclefleetmanagement.service;
 
-import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripDetailsDTO;
-import com.fleetmanager.vehiclefleetmanagement.DTO.trip.TripSummaryDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.TripDetailsDTO;
+import com.fleetmanager.vehiclefleetmanagement.dto.TripSummaryDTO;
 import com.fleetmanager.vehiclefleetmanagement.entity.Trip;
 import org.springframework.stereotype.Service;
 
