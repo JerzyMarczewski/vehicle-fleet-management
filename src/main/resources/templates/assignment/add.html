@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Add Assignment')}">
+    <title>Add Assignment</title>
+</head>
+<body>
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">
+                    <i class="fas fa-clipboard-list me-2"></i>
+                    Add New Assignment
+                </h3>
+            </div>
+            <div class="card-body">
+                <form id="assignmentForm" action="/assignments/add" method="post" th:object="${assignmentRequestDTO}">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="driverId" class="form-label">
+                                    <i class="fas fa-user me-1"></i>
+                                    Driver <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select" id="driverId" name="driverId"
+                                        th:field="*{driverId}" required>
+                                    <option value="">Select a driver...</option>
+                                    <option th:each="driver : ${availableDrivers}"
+                                            th:value="${driver.id}"
+                                            th:text="${driver.firstName + ' ' + driver.lastName + ' (' + driver.licenseNumber + ')'}">
+                                    </option>
+                                </select>
+                                <div class="form-text">Choose the driver for this assignment</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="vehicleId" class="form-label">
+                                    <i class="fas fa-car me-1"></i>
+                                    Vehicle <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select" id="vehicleId" name="vehicleId"
+                                        th:field="*{vehicleId}" required>
+                                    <option value="">Select a vehicle...</option>
+                                    <option th:each="vehicle : ${availableVehicles}"
+                                            th:value="${vehicle.id}"
+                                            th:text="${vehicle.registrationNumber}">
+                                    </option>
+                                </select>
+                                <div class="form-text">Choose the vehicle for this assignment</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="startDate" class="form-label">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Start Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" class="form-control" id="startDate" name="startDate"
+                                       th:field="*{startDate}" required>
+                                <div class="form-text">When does this assignment begin?</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="endDate" class="form-label">
+                                    <i class="fas fa-calendar-check me-1"></i>
+                                    End Date
+                                </label>
+                                <input type="date" class="form-control" id="endDate" name="endDate"
+                                       th:field="*{endDate}">
+                                <div class="form-text">Leave empty for ongoing assignment</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div>
+                            <a href="/assignments" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Cancel
+                            </a>
+                        </div>
+                        <div>
+                            <button type="reset" class="btn btn-outline-warning me-2">
+                                <i class="fas fa-undo me-1"></i> Reset Form
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus me-1"></i> Create Assignment
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

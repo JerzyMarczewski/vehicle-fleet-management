@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Assignments List')}"></head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Assignments List</h3>
+            </div>
+            <div class="card-body">
+                <table th:if="${!#lists.isEmpty(assignments)}" class="table table-hover table-striped table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Driver</th>
+                        <th>Vehicle</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="assignment : ${assignments}">
+                        <td>
+                            <a th:href="@{/assignments/{id}(id=${assignment.id})}"
+                               class="text-primary text-decoration-none"
+                               th:text="${#strings.substring(assignment.id.toString(), 0, 8) + '...'}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/drivers/{id}(id=${assignment.driver.id})}"
+                               class="text-decoration-none"
+                               th:text="${assignment.driver.firstName + ' ' + assignment.driver.lastName}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/vehicles/{id}(id=${assignment.vehicle.id})}"
+                               class="text-decoration-none">
+                                <span th:text="${assignment.vehicle.brand + ' ' + assignment.vehicle.model}"></span>
+                                <br>
+                                <small class="text-muted" th:text="${assignment.vehicle.registrationNumber}"></small>
+                            </a>
+                        </td>
+                        <td th:text="${assignment.startDate != null ? #temporals.format(assignment.startDate, 'dd/MM/yyyy') : 'N/A'}"></td>
+                        <td th:text="${assignment.endDate != null ? #temporals.format(assignment.endDate, 'dd/MM/yyyy') : 'Ongoing'}"></td>
+                        <td>
+              <span th:if="${assignment.endDate == null}" class="badge bg-success">
+                <i class="fas fa-circle me-1"></i> Active
+              </span>
+                            <span th:if="${assignment.endDate != null && assignment.endDate.before(new java.util.Date())}" class="badge bg-secondary">
+                <i class="fas fa-check-circle me-1"></i> Completed
+              </span>
+                            <span th:if="${assignment.endDate != null && assignment.endDate.after(new java.util.Date())}" class="badge bg-warning">
+                <i class="fas fa-clock me-1"></i> Scheduled
+              </span>
+                        </td>
+                        <td>
+              <span th:if="${assignment.startDate != null && assignment.endDate != null}"
+                    th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(
+                      assignment.startDate.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(),
+                      assignment.endDate.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate()
+                    ) + ' days'}"></span>
+                            <span th:if="${assignment.startDate != null && assignment.endDate == null}"
+                                  th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(
+                      assignment.startDate.toInstant().atZone(T(java.time.ZoneId).systemDefault()).toLocalDate(),
+                      T(java.time.LocalDate).now()
+                    ) + ' days'}"></span>
+                            <span th:if="${assignment.startDate == null}">N/A</span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/assignments/{id}(id=${assignment.id})}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a th:href="@{/assignments/edit/{id}(id=${assignment.id})}"
+                                   class="btn btn-sm btn-outline-warning"
+                                   title="Edit Assignment">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="End Assignment"
+                                        th:if="${assignment.endDate == null}"
+                                        onclick="endAssignment(this)"
+                                        th:data-assignment-id="${assignment.id}">
+                                    <i class="fas fa-stop-circle"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:if="${#lists.isEmpty(assignments)}" class="text-center py-5">
+                    <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No assignments found</h5>
+                    <p class="text-muted">Start by creating your first vehicle assignment.</p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div>
+                        <span class="text-muted">Total assignments: </span>
+                        <span class="fw-bold" th:text="${#lists.size(assignments)}"></span>
+                    </div>
+                    <div>
+                        <a href="/" class="btn btn-outline-secondary me-2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <a href="/assignments/add" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> New Assignment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function endAssignment(button) {
+        const assignmentId = button.getAttribute('data-assignment-id');
+        if (confirm('Are you sure you want to end this assignment?')) {
+            // Create form for PATCH request to end assignment
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/assignments/${assignmentId}/end`;
+
+            const methodField = document.createElement('input');
+            methodField.type = 'hidden';
+            methodField.name = '_method';
+            methodField.value = 'PATCH';
+            form.appendChild(methodField);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script>
+</body>
+</html>
