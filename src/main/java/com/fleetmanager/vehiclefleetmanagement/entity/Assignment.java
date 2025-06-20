@@ -2,6 +2,8 @@ package com.fleetmanager.vehiclefleetmanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -26,8 +28,8 @@ public class Assignment {
     private Driver driver;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 }
