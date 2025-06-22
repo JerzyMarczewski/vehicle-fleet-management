@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Maintenances List')}">
+    <title>Maintenances List</title>
+</head>
+<body class="bg-light">
+<div th:replace="~{fragments/layout :: mainContent(~{::section})}">
+    <section>
+        <div class="card shadow-sm">
+            <div class="card-header bg-white bg-primary-subtle text-primary">
+                <h3 class="mb-0">Maintenances List</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-striped table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Vehicle ID</th>
+                        <th>Cost</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="maintenance : ${maintenances}">
+                        <td><a th:href="@{/maintenances/{id}(id=${maintenance.id})}" class="text-primary text-decoration-none" th:text="${maintenance.id}"></a></td>
+                        <td th:text="${maintenance.date}"></td>
+                        <td th:text="${maintenance.description}"></td>
+                        <td th:text="${maintenance.type}"></td>
+                        <td th:text="${maintenance.vehicle.id}"></td>
+                        <td th:text="${maintenance.cost}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="/" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <a href="/maintenances/create" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create maintenance
+                    </a>
+                </div>
+            </div>
+    </section>
+</div>
+</body>
+</html>
