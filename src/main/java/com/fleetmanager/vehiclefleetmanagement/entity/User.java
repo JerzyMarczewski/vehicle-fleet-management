@@ -27,7 +27,3 @@ public class User {
     private UserRole role;
 }
 
-enum UserRole {
-    ADMIN,
-    OPERATOR
-}
